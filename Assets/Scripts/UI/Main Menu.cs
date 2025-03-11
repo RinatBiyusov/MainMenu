@@ -1,16 +1,19 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class MainMenu : MonoBehaviour
+namespace UI
 {
-    public void PlayGame()
+    public class MainMenu : MonoBehaviour
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-    }
+        public void PlayGame()
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        }
 
-    public void QuitGame()
-    {
-        Debug.Log("QUIT!!!");
-        Application.Quit();
+        public void QuitGame()
+        {
+            Debug.Log("QUIT!!!");
+            Application.Quit();
+        }
     }
 }
