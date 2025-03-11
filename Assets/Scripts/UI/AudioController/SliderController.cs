@@ -1,4 +1,3 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.Serialization;
@@ -43,7 +42,7 @@ namespace UI.AudioController
         private void SetVolume()
         {
             if (_toggleController.ParameterName == _parameterName)
-                _audioMixerGroup.audioMixer.SetFloat(_parameterName, _currentValue);
+                _audioMixerGroup.audioMixer.SetFloat(_parameterName, Mathf.Log10(_currentValue) * Multiplier);
         }
 
         private void SetVolume(float volume)
@@ -54,16 +53,21 @@ namespace UI.AudioController
         private float GetCorrectVolume(float volume)
         {
             _currentValue = volume;
+            
+            Debug.Log(volume);
+            
+            if (_toggleController.ParameterName == _parameterName)
+                return _toggleController.IsEnabled ? CalculateVolume(volume) : MinAmplitude;
 
-            if (_toggleController.IsEnabled || _toggleController.ParameterName != _parameterName)
-            {
-                if (volume == 0)
-                    return MinAmplitude;
+            return CalculateVolume(volume);
+        }
 
-                return Mathf.Log10(volume) * Multiplier;
-            }
+        private float CalculateVolume(float volume)
+        {
+            if (volume == 0)
+                return MinAmplitude;
 
-            return MinAmplitude;
+            return Mathf.Log10(volume) * Multiplier;
         }
     }
 }
